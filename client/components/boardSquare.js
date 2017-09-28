@@ -7,7 +7,8 @@ import {connect} from 'react-redux';
 
 const squareTarget = {
     canDrop(props, monitor, component) {
-        var id = 'id_' + monitor.getItem().pieceId 
+        var id = monitor.getItem().pieceId 
+        console.log('positions', props.positions)
         var piece = props.positions[id]
         var mobility = piece.mobility;
 
@@ -30,6 +31,18 @@ const squareTarget = {
     drop(props, monitor, component) {
         var id = monitor.getItem().pieceId
         props.moveThePiece(props.x, props.y, id)
+
+        //Check for defender next to it... this doesn't account if there are multiple adjacent
+        //  defenders or whether or not the person wants to attack. For now, we are calling 
+        //  this function automatically and then will build the options up
+        for(var i in props.positions) {
+            let diffX = Math.abs(props.positions[i].x - props.x)
+            let diffY = Math.abs(props.positions[i].y - props.y)
+            if((diffX === 1 && diffY === 0) || (diffX === 0 && diffY === 1))  {
+                console.log('HERE');
+                props.attackThePiece(id, props.positions[i].id)
+            }
+        }
     }
 };
 
@@ -95,6 +108,9 @@ const mapDispatch = (dispatch) => {
         },
         canMoveThePiece(x, y, id) {
             dispatch(canMovePiece(x, y, id))
+        }, 
+        attackThePiece(attackerId, defenderId) {
+            dispatch(attackPiece(attackerId, defenderId))
         }
     }
 }
