@@ -5,6 +5,7 @@ import history from '../history'
  * ACTION TYPES
  */
 const SET_POSITIONS = 'SET_POSITIONS';
+const SET_HEALTH = 'SET_HEALTH';
 
 /**
  * INITIAL STATE
@@ -39,6 +40,7 @@ const defaultPositions = {
  */
 
 const setPositions = positions => ({type: SET_POSITIONS, positions})
+const setHealth = positions => ({type: SET_HEALTH, positions})
 
 /**
  * THUNK CREATORS
@@ -54,7 +56,7 @@ export const attackPiece = (attackerId, defenderId) => {
         attacker.HP = Math.floor((attacker.HP - defender.AP)/2); 
         positions[attackerId] = attacker
         positions[defenderId] = defender
-        dispatch(setPositions(positions))
+        dispatch(setHealth(positions))
     }
 }
 
@@ -64,11 +66,11 @@ export const movePiece = (x, y, id) => {
     var positions = getState().positions
     id = 'id_' + id    
     var piece = positions[id];
-    console.log('piece before change', piece)
+    //console.log('piece before change', piece)
     piece.x = x;
     piece.y = y;
     positions[id] = piece;
-    console.log('piece after change', piece)
+    //console.log('piece after change', piece)
     dispatch(setPositions(positions))
   }
 }
@@ -95,6 +97,8 @@ export const canMovePiece = (x, y, id) => {
 export default function (state = defaultPositions, action) {
   switch (action.type) {
     case SET_POSITIONS:
+      return Object.assign({}, state, {positions: action.positions});
+    case SET_HEALTH:
       return Object.assign({}, state, {positions: action.positions})
     default:
         return state

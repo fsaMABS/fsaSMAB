@@ -7,16 +7,18 @@ import {connect} from 'react-redux';
 
 const squareTarget = {
     canDrop(props, monitor, component) {
-        for(var piece in props.positions) {
-            console.log()
-            if(piece.x === props.x && piece.y === props.y) {
-            
-            }
-        }
-
         var id = 'id_' + monitor.getItem().pieceId 
         var piece = props.positions[id]
         var mobility = piece.mobility;
+
+        //CANT MOVE TO WHERE PIECE ALREADY EXISTS
+        for(var i in props.positions) {
+            if(props.positions[i].x === props.x && props.positions[i].y === props.y) {
+                return false;
+            }
+        }
+        
+        //CANT MOVE BEYOND ITS MOBILITY
         var diffX = Math.abs(piece.x-props.x);
         var diffY = Math.abs(piece.y - props.y);
         if ((diffY + diffX) <= mobility) {
@@ -44,7 +46,7 @@ class BoardSquare extends Component {
     }
 
     render() {
-        console.log('props in boardsquare', this.props)        
+        //console.log('props in boardsquare', this.props)        
         const {  x, y, connectDropTarget, isOver, cell } = this.props;
         return connectDropTarget(
             <div style={{
