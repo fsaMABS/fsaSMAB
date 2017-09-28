@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 
 const infantrySource = {
     beginDrag(props) {
+        console.log("BEGIN PROPS", props);
         return {pieceId: props.id};
     }
 };
@@ -19,7 +20,6 @@ function collect(connect, monitor) {
   
 class Infantry extends Component {
     render() {
-        console.log('we are rendering')
         const { connectDragSource, isDragging } = this.props;
         return connectDragSource(
         <div style={{
