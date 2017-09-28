@@ -4,42 +4,40 @@ import history from '../history'
 /**
  * ACTION TYPES
  */
-const GET_POSITIONS = 'GET_POSITIONS';
 const SET_POSITIONS = 'SET_POSITIONS';
 
 /**
  * INITIAL STATE
  */
-const defaultPositions = [
-    {
-        id: 1,
+const defaultPositions = {
+    id_1: {
         x: 1,
         y: 1,
         HP: 10,
-        type: 'land',
+        type: 'infantry',
         AP: 3,
         mobility: 5,
         AR: 1,
         visibility: 3,
     },
-    {
+    id_2: {
         id: 2,
         x: 2,
         y: 2,
         HP: 10,
-        type: 'land',
+        type: 'infantry',
         AP: 3,
         mobility: 5,
         AR: 1,
         visibility: 3,
     }
-]
+}
 
 /**
  * ACTION CREATORS
  */
 
-const setPositions = positons => ({type: SET_POSITIONS, positions})
+const setPositions = positions => ({type: SET_POSITIONS, positions})
 
 /**
  * THUNK CREATORS
@@ -47,39 +45,44 @@ const setPositions = positons => ({type: SET_POSITIONS, positions})
 
 
 export const attackUser = (attackerId, defenderId) => {
-    return (dispatch) => {
-        
-        
-
+    return (dispatch, getState) => {
+        var positions = getState().positions
+        var attacker = positions[attackerId];
+        var defender = positions[defenderId];
+        defender.HP = defender.HP - attacker.AP; 
+        attacker.HP = Math.floor((attacker.HP - defender.AP)/2); 
+        positions[attackerId] = attacker
+        positions[defenderId] = defender
         dispatch(setPositions(positions))
     }
-
 }
-export const me = () =>
-  dispatch =>
-    axios.get('/auth/me')
-      .then(res =>
-        dispatch(getUser(res.data || defaultUser)))
-      .catch(err => console.log(err))
 
-export const auth = (method, email, password, name) =>
-  dispatch =>
-    axios.post(`/auth/${method}`, { email, password, name })
-      .then(res => {
-        dispatch(getUser(res.data))
-        history.push('/home')
-      })
-      .catch(error =>
-        dispatch(getUser({error})))
 
-export const logout = () =>
-  dispatch =>
-    axios.post('/auth/logout')
-      .then(res => {
-        dispatch(removeUser())
-        history.push('/login')
-      })
-      .catch(err => console.log(err))
+export const movePiece = (id, x, y) => {
+  return (dispatch, getState) => {
+    var positions = getState().positions
+    var piece = positions[id];
+    piece.x = x;
+    piece.y = y;
+    positions[id] = piece;
+    dispatch(setPositions(positions))
+  }
+}
+
+export const canMovePiece = (id, x, y) => {
+  return (dispatch, getState) => {
+    var positions = getState().positions
+    var piece = positions[id];
+    var mobility = piece.mobility;
+    var diffX = Math.abs(piece.x-x);
+    var diffY = Math.abs(piece.y - y);
+    if ((diffY + diffX) <= mobility) {
+      return true;
+    } else {
+      return false
+    }
+  }
+}
 
 /**
  * REDUCER
@@ -89,6 +92,6 @@ export default function (state = defaultPositions, action) {
     case SET_POSITIONS:
       return action.positions
     default:
-      return state
-  }
+        return state
+    }
 }
