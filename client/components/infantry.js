@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ItemTypes } from './Constants';
 import { DragSource } from 'react-dnd';
+import {connect} from 'react-redux';
+
 
 const infantrySource = {
     beginDrag(props) {
-        return {type: 'trump', knightId: props.id};
+        return {pieceId: props.id};
     }
 };
   
@@ -18,6 +19,7 @@ function collect(connect, monitor) {
   
 class Infantry extends Component {
     render() {
+        console.log('we are rendering')
         const { connectDragSource, isDragging } = this.props;
         return connectDragSource(
         <div style={{
@@ -26,17 +28,13 @@ class Infantry extends Component {
           fontWeight: 'bold',
           cursor: 'move'
         }}>
+            <span> &#9812; </span>
         </div>
       );
     }
 }
   
-Knight.propTypes = {
-    connectDragSource: PropTypes.func.isRequired,
-    isDragging: PropTypes.bool.isRequired
-};
-  
-const DragInfantry = DragSource(ItemTypes.KNIGHT, knightSource, collect)(Infantry);
+const DragInfantry = DragSource('piece', infantrySource, collect)(Infantry);
 
 
 const mapState = (state) => {
@@ -52,3 +50,4 @@ const mapDispatch = (dispatch) => {
 }
 
 const InfantryContainer = connect(mapState, mapDispatch)(DragInfantry)
+export default InfantryContainer

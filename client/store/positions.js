@@ -11,6 +11,7 @@ const SET_POSITIONS = 'SET_POSITIONS';
  */
 const defaultPositions = {
     id_1: {
+        id: 1,
         x: 1,
         y: 1,
         HP: 10,
@@ -44,7 +45,7 @@ const setPositions = positions => ({type: SET_POSITIONS, positions})
  */
 
 
-export const attackUser = (attackerId, defenderId) => {
+export const attackPiece = (attackerId, defenderId) => {
     return (dispatch, getState) => {
         var positions = getState().positions
         var attacker = positions[attackerId];
@@ -58,20 +59,24 @@ export const attackUser = (attackerId, defenderId) => {
 }
 
 
-export const movePiece = (id, x, y) => {
+export const movePiece = (x, y, id) => {
   return (dispatch, getState) => {
     var positions = getState().positions
+    id = 'id_' + id    
     var piece = positions[id];
+    console.log('piece before change', piece)
     piece.x = x;
     piece.y = y;
     positions[id] = piece;
+    console.log('piece after change', piece)
     dispatch(setPositions(positions))
   }
 }
 
-export const canMovePiece = (id, x, y) => {
+export const canMovePiece = (x, y, id) => {
   return (dispatch, getState) => {
     var positions = getState().positions
+    id = 'id_' + id
     var piece = positions[id];
     var mobility = piece.mobility;
     var diffX = Math.abs(piece.x-x);
