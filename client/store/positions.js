@@ -95,9 +95,7 @@ export const canMovePiece = (x, y, id) => {
 export default function (state = defaultPositions, action) {
   switch (action.type) {
     case SET_POSITIONS:
-      //console.log('DISPATCH POSITIONS: ', action.positions);
       return Object.assign({}, state, {positions: action.positions})
-      // return action.positions
     default:
         return state
     }
