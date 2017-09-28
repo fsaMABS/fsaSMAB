@@ -5,17 +5,17 @@ import Infantry from './infantry';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import {connect} from 'react-redux'
+import map from './map'
 
 class Board extends Component {
-    renderSquare(i) {
-        const x = i % 8;
-        const y = Math.floor(i / 8);
+    renderSquare(cell, i, j) {
+        // const x = i % 8;
+        // const y = Math.floor(i / 8);
         return (
-            <div key={i}
-                style={{ width: '12.5%', height: '12.5%' }}>
-                <BoardSquare x={x}
-                            y={y}>
-                {this.renderPiece(x, y)}
+            <div key={i + 'row' + j}
+                style={{ flex: 1 }}>
+                <BoardSquare x={i} y={j} cell={cell}>
+                {this.renderPiece(i, j)}
                 </BoardSquare>
             </div>
         );
@@ -33,19 +33,24 @@ class Board extends Component {
     }
 
     render() {
-        const squares = [];
-        for (let i = 0; i < 64; i++) {
-            squares.push(this.renderSquare(i));
-        }
+        let parsedMap = map.map((row, i) => {
+            return (<div key={i} style={{flex: 1, display: 'flex', flexDirection: 'row'}}>
+                {row.split('').map((cell, j) => this.renderSquare(cell, i, j))}
+            </div>)
+        })
+        // for (let i = 0; i < 160; i++) {
+        //     squares.push(this.renderSquare(i));
+        // }
 
         return (
             <div style={{
-                width: '800px',
-                height: '800px',
+                width: '1600px',
+                height: '1000px',
                 display: 'flex',
-                flexWrap: 'wrap'
+                flexDirection: 'column'
+                // flexWrap: 'wrap'
             }}>
-                {squares}
+                {parsedMap}
             </div>
         );
     }

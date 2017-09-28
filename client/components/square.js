@@ -3,9 +3,17 @@ import PropTypes from 'prop-types';
 
 export default class Square extends Component {
     render() {
-        const { black } = this.props;
-        const fill = black ? '#fdae01' : 'black';
-        const stroke = black ? 'black' : ' #fdae01';
+        const { cell } = this.props;
+        let fill, stroke
+        switch (cell) {
+            case '_':
+                fill = 'green';
+                stroke = 'yellow';
+                break;
+            default:
+                fill = '#3355ee'; //'#fdae01';
+                stroke = 'black';
+        }
 
         return (
             <div style={{

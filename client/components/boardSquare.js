@@ -37,15 +37,14 @@ class BoardSquare extends Component {
     }
     render() {
         console.log('props in boardsquare', this.props)        
-        const { x, y, connectDropTarget, isOver } = this.props;
-        const black = (x + y) % 2 === 1;
+        const { x, y, connectDropTarget, isOver, cell } = this.props;
         return connectDropTarget(
             <div style={{
                 position: 'relative',
                 width: '100%',
                 height: '100%'
             }}>
-                <Square black={black}>
+                <Square cell={cell}>
                     {this.props.children}
                 </Square>
                 {isOver &&
