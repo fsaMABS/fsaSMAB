@@ -9,8 +9,6 @@ import map from './map'
 
 class Board extends Component {
     renderSquare(cell, i, j) {
-        // const x = i % 8;
-        // const y = Math.floor(i / 8);
         return (
             <div key={i + 'row' + j}
                 style={{ flex: 1 }}>
@@ -44,8 +42,8 @@ class Board extends Component {
 
         return (
             <div style={{
-                width: '1600px',
-                height: '1000px',
+                width: '100vw',
+                height: '100vh',
                 display: 'flex',
                 flexDirection: 'column'
                 // flexWrap: 'wrap'
