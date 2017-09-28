@@ -20,7 +20,6 @@ class Board extends Component {
     }
       
     renderPiece(x, y) {
-        console.log(this.props.positions)
         var positions = this.props.positions
         for (var id in positions) {
             var piece = positions[id];
