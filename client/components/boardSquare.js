@@ -46,7 +46,7 @@ class BoardSquare extends Component {
                 height: '100%'
             }}>
                 <Square black={black}>
-                {this.props.children}
+                    {this.props.children}
                 </Square>
                 {isOver &&
                 <div style={{

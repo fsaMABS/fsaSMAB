@@ -60,7 +60,6 @@ const mapState = (state) => {
 
 
 var RealBoard = DragDropContext(HTML5Backend)(Board);
-
 var BoardContainer = connect(mapState)(RealBoard)
 
 
