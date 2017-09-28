@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BoardSquare from './boardSquare';
-import Piece from './infantry';
+import Infantry from './infantry';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
-import Obama from './obama';
-
+import {connect} from 'react-redux'
 
 class Board extends Component {
     renderSquare(i) {
@@ -23,12 +22,14 @@ class Board extends Component {
     }
       
     renderPiece(x, y) {
-        for (var i = 0; i <this.props.positions.length; i++) {
-            const [pieceX, pieceY, pieceId] = this.props.positions[i];
-            if (x=== pieceX && y === pieceY) {
-                return <Piece id={pieceId}/>
-            }          
-        }
+        console.log(this.props.positions)
+        var positions = this.props.positions
+        for (var id in positions) {
+            var piece = positions[id];
+            if (x === piece.x && y === piece.y) {
+                return <Infantry id={piece.id}/>                
+            }
+        }        
     }
 
     render() {
@@ -52,15 +53,16 @@ class Board extends Component {
 
 
 const mapState = (state) => {
-    positions = state.positions
+    return {
+        positions: state.positions
+    }
 }
 
-const mapDispatch = (dispatch) => {
 
-}
+var RealBoard = DragDropContext(HTML5Backend)(Board);
 
-var BoardDragDropContext = DragDropContext(HTML5Backend)(Board);
+var BoardContainer = connect(mapState)(RealBoard)
 
-var BoardContainer = connect(mapState,mapDispatch)(BoardDragDropContext)
+
 
 export default BoardContainer
