@@ -8,7 +8,9 @@ import {connect} from 'react-redux';
 const squareTarget = {
     canDrop(props, monitor, component) {
         for(var piece in props.positions) {
+            console.log()
             if(piece.x === props.x && piece.y === props.y) {
+            
             }
         }
 
@@ -43,7 +45,7 @@ class BoardSquare extends Component {
 
     render() {
         console.log('props in boardsquare', this.props)        
-        const { x, y, connectDropTarget, isOver, cell } = this.props;
+        const {  x, y, connectDropTarget, isOver, cell } = this.props;
         return connectDropTarget(
             <div style={{
                 position: 'relative',
