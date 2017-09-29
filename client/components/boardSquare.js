@@ -8,7 +8,6 @@ import {connect} from 'react-redux';
 const squareTarget = {
     canDrop(props, monitor, component) {
         var id = monitor.getItem().pieceId 
-        console.log('positions', props.positions)
         var piece = props.positions[id]
         var mobility = piece.mobility;
 
@@ -38,8 +37,7 @@ const squareTarget = {
         for(var i in props.positions) {
             let diffX = Math.abs(props.positions[i].x - props.x)
             let diffY = Math.abs(props.positions[i].y - props.y)
-            if((diffX === 1 && diffY === 0) || (diffX === 0 && diffY === 1))  {
-                console.log('HERE');
+            if(((diffX === 1 && diffY === 0) || (diffX === 0 && diffY === 1)) && (props.positions[id].attackStatus === true))  {
                 props.attackThePiece(id, props.positions[i].id)
             }
         }

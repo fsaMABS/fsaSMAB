@@ -6,6 +6,7 @@ import history from '../history'
  */
 const SET_POSITIONS = 'SET_POSITIONS';
 const SET_HEALTH = 'SET_HEALTH';
+const SET_ATTACKSTATUS = 'SET_ATTACKSTATUS';
 
 /**
  * INITIAL STATE
@@ -21,6 +22,7 @@ const defaultPositions = {
         mobility: 5,
         AR: 1,
         visibility: 3,
+        attackStatus: true
     },
     '2': {
         id: 2,
@@ -32,6 +34,7 @@ const defaultPositions = {
         mobility: 5,
         AR: 1,
         visibility: 3,
+        attackStatus: true
     }
 }
 
@@ -41,6 +44,7 @@ const defaultPositions = {
 
 const setPositions = positions => ({type: SET_POSITIONS, positions})
 const setHealth = positions => ({type: SET_HEALTH, positions})
+const setAttackStatus = positions => ({type: SET_ATTACKSTATUS, positions})
 
 /**
  * THUNK CREATORS
@@ -52,10 +56,22 @@ export const attackPiece = (attackerId, defenderId) => {
         var positions = getState().positions
         var attacker = positions[attackerId];
         var defender = positions[defenderId];
+
+        //adjust health of each piece
         defender.HP -= attacker.AP; 
-        attacker.HP -= Math.floor((defender.AP)/2); 
+        attacker.HP -= Math.floor((defender.AP)/2);
+
+        //change attack status of attacker
+        attacker.attackStatus = false;
+
+        //set updates
         positions[attackerId] = attacker
         positions[defenderId] = defender
+
+
+        //dispatch updates to state
+        dispatch(setAttackStatus(positions))
+
         dispatch(setHealth(positions))
     }
 }
@@ -97,6 +113,8 @@ export default function (state = defaultPositions, action) {
     case SET_POSITIONS:
       return Object.assign({}, state, action.positions);
     case SET_HEALTH:
+      return Object.assign({}, state, action.positions);
+    case SET_ATTACKSTATUS:
       return Object.assign({}, state, action.positions);
     default:
         return state
