@@ -18,7 +18,7 @@ const squareTarget = {
             }
         }
         
-        //CANT MOVE BEYOND ITS MOBILITY
+        //CANT MOVE BEYOND ITS MOBILITEE
         var diffX = Math.abs(piece.x-props.x);
         var diffY = Math.abs(piece.y - props.y);
         if ((diffY + diffX) <= mobility) {
